@@ -23,5 +23,8 @@ composer phpstan
 echo -e "Running Psalm..."
 composer psalm
 
+echo -e "Running PHP_CodeSniffer..."
+composer sniffer
+
 echo -e "Running Tests..."
 php artisan test
