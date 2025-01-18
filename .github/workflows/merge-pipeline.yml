@@ -1,6 +1,5 @@
 name: Merge Pipeline
 
-# Run the pipeline when a pull request is created or updated
 on:
   pull_request:
     types:
@@ -8,20 +7,28 @@ on:
       - synchronize
       - reopened
     branches:
-      - main  # or whichever branch you want to merge into
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out the code
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'  # Use the same PHP version you use in your Docker container
+          php-version: '8.4'
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.composer/cache
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
         run: |
@@ -38,13 +45,18 @@ jobs:
           echo "Running PHPStan..."
           vendor/bin/phpstan
 
+      # Step 7: Run Psalm
       - name: Run Psalm
         run: |
           echo "Running Psalm..."
           vendor/bin/psalm
 
+      # Step 8: Run Tests
       - name: Run Tests
         run: |
           echo "Running Tests..."
           php artisan test
 
+      - name: Success message
+        if: success()
+        run: echo "Todas as validações ocorreram com sucesso, prosseguindo com o merge."
