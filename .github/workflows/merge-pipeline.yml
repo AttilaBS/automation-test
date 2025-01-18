@@ -45,7 +45,6 @@ jobs:
           echo "Running PHPStan..."
           vendor/bin/phpstan
 
-      # Step 7: Run Psalm
       - name: Run Psalm
         run: |
           echo "Running Psalm..."
