@@ -38,20 +38,23 @@ jobs:
       - name: Run Pint
         run: |
           echo "Running Pint..."
-          vendor/bin/pint
+          composer pint
+
+      - name: Run sniffer
+        run: |
+          echo "Running PHP_CodeSniffer..."
+          composer sniffer
 
       - name: Run PHPStan
         run: |
           echo "Running PHPStan..."
-          vendor/bin/phpstan
+          composer phpstan
 
-      # Step 7: Run Psalm
       - name: Run Psalm
         run: |
           echo "Running Psalm..."
-          vendor/bin/psalm
+          composer psalm
 
-      # Step 8: Run Tests
       - name: Run Tests
         run: |
           echo "Running Tests..."

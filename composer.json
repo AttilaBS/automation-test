@@ -23,6 +23,7 @@
         "nunomaduro/collision": "^8.1",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.0.1",
+        "squizlabs/php_codesniffer": "*",
         "vimeo/psalm": "6.x-dev"
     },
     "autoload": {
@@ -59,7 +60,8 @@
         ],
         "pint": "pint",
         "phpstan": "phpstan analyse -c phpstan.neon",
-        "psalm": "psalm"
+        "psalm": "psalm",
+        "sniffer": "phpcs"
     },
     "extra": {
         "laravel": {
