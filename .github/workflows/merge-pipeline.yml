@@ -1,0 +1,50 @@
+name: Merge Pipeline
+
+# Run the pipeline when a pull request is created or updated
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+    branches:
+      - main  # or whichever branch you want to merge into
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v3
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'  # Use the same PHP version you use in your Docker container
+
+      - name: Install Composer dependencies
+        run: |
+          curl -sS https://getcomposer.org/installer | php
+          php composer.phar install --no-interaction --prefer-dist
+
+      - name: Run Pint
+        run: |
+          echo "Running Pint..."
+          vendor/bin/pint
+
+      - name: Run PHPStan
+        run: |
+          echo "Running PHPStan..."
+          vendor/bin/phpstan
+
+      - name: Run Psalm
+        run: |
+          echo "Running Psalm..."
+          vendor/bin/psalm
+
+      - name: Run Tests
+        run: |
+          echo "Running Tests..."
+          php artisan test
+
